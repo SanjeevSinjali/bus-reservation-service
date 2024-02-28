@@ -1,1 +1,3 @@
 # contains global variables
+
+User = {}
