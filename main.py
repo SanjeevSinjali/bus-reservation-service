@@ -1,5 +1,7 @@
 import tkinter as tk
+import os
 from pages import cus_login
+from lib import globals
 class MainApp(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -19,5 +21,6 @@ class MainApp(tk.Tk):
         print("I am register page")
         
 if __name__ == "__main__":
+    globals.dataPath = os.path.abspath("./data/images")
     app = MainApp()
     app.mainloop()
