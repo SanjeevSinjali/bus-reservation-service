@@ -2,7 +2,7 @@
 
 import tkinter as tk
 from tkinter import ttk,messagebox
-from pages import admin_login
+from pages import admin_login,staff_login
 from lib import globals
 class LoginPage(tk.Frame):
     def __init__(self, master=None):
@@ -14,7 +14,7 @@ class LoginPage(tk.Frame):
 
         img_label = tk.Label(self.master)
         img_label.place(relx=0, rely=0, relwidth=0.5, relheight=1)
-        img = tk.PhotoImage(file="/Users/sanjeev/Desktop/bus-reservation-service/data/images/bus.png")
+        img = tk.PhotoImage(file=globals.dataPath+"/bus.png")
         img_label.config(image=img)
         img_label.image = img
 
@@ -78,13 +78,21 @@ class LoginPage(tk.Frame):
         self.destroy()        
 
     def staff(self):
-        print("Go to staff")
+        staff_page = staff_login.LoginPage(self.master)
+        staff_page.pack(fill="both", expand=True)
+        self.destroy()
             
     def customer(self):
-        print("Go to customer")
+        self.clear_frame(self)
+        self.customerPage()
 
     def createAccount(self):
         print("Go to create account")
         
     def forgotPassword(self):
         print("You forgot your password!!!!!")
+
+    def clear_frame(self, frame):
+        for widget in frame.winfo_children():
+            print(f"Destroying widget: {widget}")
+            widget.destroy()
