@@ -138,3 +138,13 @@ class dbfunctions(object):
             return False
         else :
             return user
+
+    # create passphrase for a user --> used for recovery 
+    def create_passphrase(self,email,passphrase):
+        try:
+            self.cursor.execute('INSERT INTO recover(email,recover_phrase) VALUES(?,?)',(email,passphrase))
+            self.conn.commit()
+        except Exception as e:
+            print(e)
+            return False
+        
