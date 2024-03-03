@@ -346,3 +346,13 @@ class dbfunctions(object):
                 'status': item[2]
             })
         return agency_list
+    
+    #booking function
+    def insert_booking(self, user_id, busseat_id, booking_date, total_amount):
+        try:
+            self.cursor.execute('INSERT INTO booking(user_id, busseat_id, booking_date, total_amount) VALUES (?, ?, ?, ?)',
+                                (user_id, busseat_id, booking_date, total_amount))
+            self.conn.commit()
+            return True
+        except:
+            return False
