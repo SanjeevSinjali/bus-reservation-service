@@ -33,3 +33,66 @@ class Dashboard(tk.Frame):
     def button_clicked(self, clicked):
             if self.button_callback:
                 self.button_callback(clicked)
+
+class AdminPage(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self.db_instance = dbfunctions.dbfunctions()
+        self.master.title("Admin Page")
+        self.master.geometry("1000x700")
+        self.master.resizable(False, False)
+
+        self.dashboard = Dashboard(self, button_callback=self.handle_dashboard_click)
+        self.dashboard.pack(side="left", fill="y", expand=True)
+
+        self.admin_content_frame = tk.Frame(self.master)
+        self.admin_content_frame.pack(side="right", fill="both", expand=True)
+
+        self.APage()
+
+    def APage(self):
+
+        # Content section
+        welcome_lbl = ttk.Label(self.admin_content_frame, text=f"Welcome Back!")
+        welcome_lbl.grid(row=0, column=0, padx=10, pady=10, sticky="e")
+
+        Customers_lbl = ttk.Label(self.admin_content_frame, text=f"Customers")
+        Customers_lbl.grid(row=1, column=0, padx=0, pady=10, sticky="e")
+        # Customer Table
+        customer_frame = tk.Frame(self.admin_content_frame)
+        customer_frame.grid(row=2, column=0, columnspan=3,padx=10, pady=10, sticky="nsew")
+
+        customer_tree = ttk.Treeview(customer_frame, columns=("Full Name", "Email", "Phone Number"), show="headings")
+        customer_tree.heading("Full Name", text="Full Name")
+        customer_tree.heading("Email", text="Email")
+        customer_tree.heading("Phone Number", text="Phone Number")
+
+        #Fetch customer data from the database and populate the table
+        customers = self.db_instance.get_user_by_role("CUSTOMER")
+        for customer in customers:
+            customer_tree.insert("", "end", values=(customer[0], customer[1], customer[2]))
+
+        customer_tree.pack(fill="both", expand=True)
+
+        Staff_lbl = ttk.Label(self.admin_content_frame, text=f"Staff")
+        Staff_lbl.grid(row=3, column=0, padx=0, pady=10, sticky="e")
+
+        # Staff Table
+        staff_frame = tk.Frame(self.admin_content_frame)
+        staff_frame.grid(row=4, column=0, padx=10, pady=10, sticky="nsew")
+
+        staff_tree = ttk.Treeview(staff_frame, columns=("Full Name", "Email", "Phone Number", "Agency"), show="headings")
+        staff_tree.heading("Full Name", text="Full Name")
+        staff_tree.heading("Email", text="Email")
+        staff_tree.heading("Phone Number", text="Phone Number")
+        staff_tree.heading("Agency", text="Agency")
+
+        # self.db_instance.get_user_by_role("STAFF")
+        # self.db_instance.get_user_by_role("CUSTOMER")
+        # Fetch staff data from the database and populate the table
+        staff_members = self.db_instance.get_user_by_role("STAFF")  # Assuming you have a method to fetch staff
+        for staff_member in staff_members:
+            staff_tree.insert("", "end", values=(staff_member[0], staff_member[1], staff_member[2],staff_member[4]))
+
+        staff_tree.pack(fill="both", expand=True)
