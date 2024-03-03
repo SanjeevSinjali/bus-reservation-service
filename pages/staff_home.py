@@ -257,3 +257,53 @@ class StaffPage(tk.Frame):
                 destination.append(i[1])
         self.source_list = list(set(source))
         self.destination_list = list(set(destination))
+        
+      
+    def settingPage(self):
+        user = self.db_instance.get_one_user_info(globals.User["id"])
+        if user is False:
+            return  tk.messagebox.showerror(title = "Error",message = "Error getting data!!!")
+        
+        self.fullname = tk.StringVar()
+        self.email = tk.StringVar()
+        self.phonenumber = tk.StringVar()
+        self.password = tk.StringVar()
+        
+        register_lbl = ttk.Label(self.staff_content_frame,text="Register")
+        register_lbl.grid(row=0, column=1,padx=0, pady=10, sticky="e")
+        
+        ttk.Label(self.staff_content_frame, text="Full Name:").grid(row=1, column=0, padx=10, pady=10, sticky="e")
+        self.entry_fullname = ttk.Entry(self.staff_content_frame,textvariable=self.fullname)
+        self.entry_fullname.grid(row=1, column=1, padx=10, pady=10, sticky="w")
+        self.fullname.set(user[0])
+
+        ttk.Label(self.staff_content_frame, text="Email:").grid(row=2, column=0, padx=10, pady=10, sticky="e")
+        self.entry_email = ttk.Entry(self.staff_content_frame,textvariable=self.email)
+        self.entry_email.grid(row=2, column=1, padx=10, pady=10, sticky="w")
+        self.email.set(user[1])
+
+        ttk.Label(self.staff_content_frame, text="Phone Number:").grid(row=3, column=0, padx=10, pady=10, sticky="e")
+        self.entry_phone = ttk.Entry(self.staff_content_frame,textvariable=self.phonenumber)
+        self.entry_phone.grid(row=3, column=1, padx=10, pady=10, sticky="w")
+        self.phonenumber.set(user[2])
+
+        ttk.Label(self.staff_content_frame, text="Password:").grid(row=4, column=0, padx=10, pady=10, sticky="e")
+        self.entry_password = ttk.Entry(self.staff_content_frame, show="*",textvariable=self.password)
+        self.entry_password.grid(row=4, column=1, padx=10, pady=10, sticky="w")
+        self.password.set(user[3])
+
+        # Buttons
+        ttk.Button(self.staff_content_frame, text="Update", command=self.update_user).grid(row=6, column=1, padx=10, pady=10, sticky="e")
+    
+    def update_user(self):
+        user_id = globals.User["id"]
+        fullname = self.fullname.get()
+        email = self.email.get()
+        phonenumber = self.phonenumber.get()
+        password = self.password.get()
+        print(fullname,password,email,phonenumber,user_id)
+        update_user = self.db_instance.update_user(fullname,password,email,phonenumber,user_id)
+        if update_user:
+            return tk.messagebox.showerror(title = "Info",message = "Update Success")
+        else: 
+            return tk.messagebox.showerror(title = "Error",message = "Failed!!!")
