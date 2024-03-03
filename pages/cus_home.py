@@ -123,3 +123,57 @@ class HomePage(tk.Frame):
             print(f"Destroying widget: {widget}")  # Debugging output
             widget.destroy()
         print("Frame cleared") 
+        
+    def searchPage(self):
+        welcome_lbl = ttk.Label(self.content_frame, text=f"Welcome Back! {globals.User['fullname']}")
+        welcome_lbl.grid(row=0, column=0, columnspan=5, padx=20, pady=10, sticky="e")
+
+        source_lbl = ttk.Label(self.content_frame, text=f"{self.leaving_from_str.get()}")
+        source_lbl.grid(row=1, column=0, columnspan=1, padx=0, pady=0, sticky="e")
+
+        separator_lbl = ttk.Label(self.content_frame, text="to")
+        separator_lbl.grid(row=1, column=1, columnspan=1, padx=0, pady=0, sticky="e")
+
+        destination_lbl = ttk.Label(self.content_frame, text=f"{self.going_to_str.get()}")
+        destination_lbl.grid(row=1, column=2, columnspan=1, padx=0, pady=0, sticky="e")
+
+        shift_lbl = ttk.Label(self.content_frame, text=f"shift: {self.shift.get()}")
+        shift_lbl.grid(row=1, column=3, columnspan=1, padx=0, pady=0, sticky="e")
+
+        date_lbl = ttk.Label(self.content_frame, text=f"{self.date}")
+        date_lbl.grid(row=1, column=4, columnspan=1, padx=0, pady=0, sticky="e")
+
+        self.tree = ttk.Treeview(self.content_frame, columns=("Travels", "Bus Type", "Departure/Shift", "Available", "Fare"),height=24)
+        self.tree.heading("#0", text="Id", anchor="w")
+        self.tree.heading("Travels", text="Travels")
+        self.tree.heading("Bus Type", text="Bus Type")
+        self.tree.heading("Departure/Shift", text="Departure/Shift")
+        self.tree.heading("Available", text="Available")
+        self.tree.heading("Fare", text="Fare")
+
+        self.tree.column("#0", width=0, stretch=tk.NO)
+        self.tree.column("Travels", width=150)  # Adjust the width as needed
+        self.tree.column("Bus Type", width=100)  # Adjust the width as needed
+        self.tree.column("Departure/Shift", width=100)  # Adjust the width as needed
+        self.tree.column("Available", width=75)  # Adjust the width as needed
+        self.tree.column("Fare", width=75)  # Adjust the width as needed
+
+        for row_data in self.tabledatas:
+            self.tree.insert("", "end", values=row_data)
+
+        self.tree.grid(row=2, column=0, columnspan=5,padx=10, pady=0)
+        self.tree.bind("<<TreeviewSelect>>", self.on_treeview_select)
+
+
+    def on_treeview_select(self, event):
+        selected_item = self.tree.selection()
+        
+        if selected_item:
+            # Get the values of the selected row
+            values = self.tree.item(selected_item, 'values')
+            # Now you have the values, you can use them to navigate to another frame or perform other actions
+            print("Selected Row Values:", values)
+            bus_id = values[-1]
+            # print(values[-1])
+            self.clear_table_from_frame(self.content_frame)
+        self.book_page(bus_id)
