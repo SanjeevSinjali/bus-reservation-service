@@ -162,3 +162,24 @@ class dbfunctions(object):
         except Exception as e:
             print(e)
             return False 
+        
+    #get data from user using their roles
+    def get_user_by_role(self, role):
+        if role == "STAFF":
+            user_data = self.cursor.execute("""
+                SELECT u.fullname, u.email, u.phonenumber, u.agency_id, a.name
+                FROM user u
+                LEFT JOIN agency a ON u.agency_id = a.id
+                WHERE u.role=?
+            """, (role,)).fetchall()
+        else:
+            user_data = self.cursor.execute("""
+                SELECT fullname, email, phonenumber
+                FROM user
+                WHERE role=?""", (role,)).fetchall()
+
+        if user_data is None:
+            return False
+        else:
+            print(user_data)
+            return user_data
