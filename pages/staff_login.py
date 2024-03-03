@@ -136,8 +136,7 @@ class LoginPage(tk.Frame):
             tk.messagebox.showerror(title = "Error",message = "Password didn't match with each other!!!")
             return
         try:
-            #do database query for recovering password
-            recover_password = True
+            recover_password = self.db_instance.forgot_password(email,phrase,password)
             if recover_password:
                 tk.messagebox.showinfo(title = "Success",message = "Password Successfully reset")
             else:
