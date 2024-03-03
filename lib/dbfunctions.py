@@ -225,3 +225,13 @@ class dbfunctions(object):
         except Exception as e:
             print(f"{e}")
             return False
+        
+    #automatic bulk creation of  bus seats on creation of bus
+    def create_bus_seats_bulk(self,bus_id,no_of_seats):
+        try:
+            for i in range(0,no_of_seats):
+                self.cursor.execute('INSERT INTO busseat(bus_id,isAvailable,seatnumber) VALUES(?,1,?)',(bus_id,i+1))
+                self.conn.commit()
+        except Exception as e:
+            print(e)
+            return False 
