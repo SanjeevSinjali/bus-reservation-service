@@ -1,7 +1,8 @@
 # login_page.py
 import tkinter as tk
 from tkinter import ttk,messagebox
-from lib import globals
+from lib import globals,dbfunctions
+from pages import admin_home
 class LoginPage(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -9,6 +10,8 @@ class LoginPage(tk.Frame):
         self.master.title("Login Page")
         self.master.geometry("750x700")
         self.master.resizable(False, False)
+        self.db_instance = dbfunctions.dbfunctions()
+
 
         img_label = tk.Label(self.master)
         img_label.place(relx=0, rely=0, relwidth=0.5, relheight=1)
@@ -49,6 +52,18 @@ class LoginPage(tk.Frame):
         password = self.entry_password.get()
         print("Username:", username)
         print("Password:", password)
+        
+        user = self.db_instance.has_user(username, password,role="ADMIN")
+        
+        if user is None:
+            tk.messagebox.showerror(title = "Error",message = "User not Found!!!")
+            return 
+
+        # Create and show the Home page
+        home_page = admin_home.AdminPage(self.master)
+        home_page.pack(fill="both", expand=True)
+
+        self.destroy()
 
     def createAccount(self):
         self.destroy()
