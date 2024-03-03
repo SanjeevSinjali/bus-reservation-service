@@ -370,3 +370,21 @@ class dbfunctions(object):
                 'total_amount': item[4]
             })
         return booking_list
+    
+    def get_all_bus_seat_from_bus_id(self,bus_id):
+        self.cursor.execute('SELECT seatnumber,isAvailable,bus_id FROM busseat WHERE bus_id=?',(bus_id))
+        tabeldata = self.cursor.fetchall()
+        print("table data : ",tabeldata)
+        self.cursor.execute('SELECT seat_price FROM bus where id=?',(tabeldata[0][2],))
+        seat_price = self.cursor.fetchall()
+
+        if tabeldata is None:
+            return None
+        else:
+            for i in range(0,len(tabeldata)):
+                if tabeldata[i][1] == 1:
+                    isAvailable = "AVAILABLE"
+                else:
+                    isAvailable = "BOOKED"
+                tabeldata[i] = tabeldata[i][0] , isAvailable,tabeldata[i][2],seat_price
+            return tabeldata
