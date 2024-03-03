@@ -186,3 +186,22 @@ class StaffPage(tk.Frame):
                 tk.messagebox.showerror(title = "Error",message = "Update Failed!!!")
                 return
 
+    def handle_dashboard_click(self, clicked_button):
+        if clicked_button == "Home":
+            self.clear_frame(self.staff_content_frame)
+            self.SPage()
+            print("Handling Home button click in HomePage")
+        elif clicked_button == "Orders":
+            self.clear_frame(self.staff_content_frame)
+            self.orderPage()
+            print("Handling History button click in HomePage")
+        elif clicked_button == "Settings":
+            print("Handling Settings button click in HomePage")
+            self.clear_frame(self.staff_content_frame)
+            self.settingPage()
+        elif clicked_button == "Logout":
+            print("Handling Logout button click in HomePage")
+            globals.User = {}
+            login_page_window = tk.Toplevel(self.master)
+            login_page = login.LoginPage(login_page_window)
+            self.master.withdraw() 
