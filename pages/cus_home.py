@@ -177,3 +177,35 @@ class HomePage(tk.Frame):
             # print(values[-1])
             self.clear_table_from_frame(self.content_frame)
         self.book_page(bus_id)
+
+    def book_page(self,bus_id):
+        img_label = tk.Label(self.content_frame)
+        # img = tk.PhotoImage(file="/Users/sanjeev/Desktop/ticket/data/images/bus seat.png")
+        img = tk.PhotoImage(file=globals.dataPath+"/bus seat.png")
+        img_label.config(image=img)
+        img_label.image = img
+        img_label.grid(row=3, column=0, pady=10, sticky="w")
+
+        self.bookdatas = self.db_instance.get_all_bus_seat_from_bus_id(bus_id)
+        print(self.bookdatas)
+
+        self.tree = ttk.Treeview(self.content_frame, columns=("Seat Number", "Status","Bus_id","price"),height=24)
+        self.tree.heading("#0", text="Id", anchor="w")
+        self.tree.heading("Seat Number", text="Seat Number")
+        self.tree.heading("Status", text="Status")
+        self.tree.heading("Bus_id",text="Bus_id")
+        self.tree.heading("price",text="price")
+
+        self.tree.column("#0", width=0, stretch=tk.NO)
+        self.tree.column("Seat Number", width=150)  # Adjust the width as needed
+        self.tree.column("Status", width=100)
+        self.tree.column("Bus_id",width=50)  # Adjust the width as needed
+        self.tree.column("price",width=50) 
+
+        for row_data in self.bookdatas:
+            self.tree.insert("", "end", values=row_data)
+
+        self.tree.grid(row=3, column=1, columnspan=5,padx=10, pady=0)
+
+        book_btn = ttk.Button(self.content_frame, text="Book", command=self.book_selected)
+        book_btn.grid(row=4, column=3, padx=10, pady=10, sticky="e")
