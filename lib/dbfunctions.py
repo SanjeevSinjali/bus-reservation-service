@@ -68,7 +68,8 @@ class dbfunctions(object):
                                 )''')
         self.conn.commit()
         # self.conn.close()
-        
+    
+    #registration function    
     def create_user(self, fullname, password,email,phonenumber,pin,agency_name=None,role="CUSTOMER",):
         print(agency_name)
         print(role)
@@ -93,3 +94,22 @@ class dbfunctions(object):
             print(f"Error during insertion: {e}")
             return False
         
+
+    #Login Page
+    def has_user(self, fullname, password,role=None):
+        fullname = fullname.strip()
+        password = password.strip()
+        print(role)
+        if role is None:
+            print("hello none")
+            user = self.cursor.execute(
+                'SELECT id,fullname,role FROM user WHERE fullname=? and password=?',
+                (fullname, password)).fetchone()
+        else: 
+            user = self.cursor.execute(
+                'SELECT id,fullname,role FROM user WHERE fullname=? and password=? and role=?',
+                (fullname, password, role)).fetchone()
+        if user is None:
+            return None
+        else:
+            return user    
