@@ -250,3 +250,16 @@ class dbfunctions(object):
             return True
         except:
             return False
+        
+    #agency update function 
+    def update_agency(self, agency_id, new_name, new_status):
+        new_name = new_name.strip()
+        new_status = new_status.strip()
+
+        try:
+            self.cursor.execute('UPDATE agency SET name=?, status=? WHERE id=?',
+                                (new_name, new_status, agency_id))
+            self.conn.commit()
+            return True
+        except:
+            return False
