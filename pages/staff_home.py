@@ -224,7 +224,14 @@ class StaffPage(tk.Frame):
         self.tree.column("total_amount", width=75)  
 
 
-        #sudeep get data from database to fill the table 
+        rows_data = self.db_instance.cursor.execute('''SELECT booking.bus_seat_number, booking.booking_date, booking.total_amount
+                                                        FROM booking
+                                                        JOIN bus ON booking.bus_id = bus.id
+                                                        JOIN agency ON bus.agency_id = agency.id
+                                                        WHERE agency.id = (SELECT agency_id FROM user WHERE id = ?);''',(user_id,)).fetchall()
+        print(rows_data)
+        for row_data in rows_data:
+            self.tree.insert("", "end", values=row_data)
         self.tree.pack(fill="both",expand=True)
 
 
