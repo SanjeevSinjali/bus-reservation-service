@@ -283,3 +283,24 @@ class dbfunctions(object):
             return True
         except:
             return False
+        
+    #update bus seats[single select in ui]    
+    def update_busseat(self, busseat_id, new_isAvailable, new_seatprice):
+        try:
+            self.cursor.execute('UPDATE busseat SET isAvailable=?,seat_price=? WHERE id=?',
+                                (new_isAvailable, new_seatprice , busseat_id))
+            self.conn.commit()
+            return True
+        except:
+            return False
+    
+    #update bus seat in bulk [multiple select in ui]
+    def update_busseat_bulk(self, busseat_ids, new_isAvailable,new_seatprice):
+        try:
+            for busseat_id in busseat_ids:
+                self.cursor.execute('UPDATE busseat SET bus_id=?, isAvailable=?, seatnumber=?,new_seatprice=? WHERE id=?',
+                                    (new_isAvailable, busseat_id,new_seatprice))
+            self.conn.commit()
+            return True
+        except:
+            return False
