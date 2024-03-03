@@ -227,3 +227,16 @@ class StaffPage(tk.Frame):
         #sudeep get data from database to fill the table 
         self.tree.pack(fill="both",expand=True)
 
+
+    def get_source_destination_list(self): 
+        data_list = self.db_instance.get_all_destination_source()
+        source = []
+        destination = []
+        if list == None:
+            print(False)
+        else:            
+            for i in data_list:
+                source.append(i[0])
+                destination.append(i[1])
+        self.source_list = list(set(source))
+        self.destination_list = list(set(destination))
