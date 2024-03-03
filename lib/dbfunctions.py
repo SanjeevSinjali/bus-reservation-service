@@ -148,3 +148,17 @@ class dbfunctions(object):
             print(e)
             return False
         
+    def forgot_password(self,email,recover_phrase,new_password):
+        try:
+            phrase = self.cursor.execute('SELECT recover_phrase FROM recover WHERE email=?',(email,)).fetchone()
+            if phrase is None:
+                return False
+            if phrase[0] != recover_phrase:
+                return False 
+            self.cursor.execute('UPDATE user SET password=? WHERE email=?',(new_password,email))
+            self.conn.commit()
+            return True
+
+        except Exception as e:
+            print(e)
+            return False 
