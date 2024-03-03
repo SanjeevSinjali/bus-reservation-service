@@ -211,3 +211,19 @@ class StaffPage(tk.Frame):
             print(f"Destroying widget: {widget}")  # Debugging output
             widget.destroy()
         print("Frame cleared")  
+    
+    def orderPage(self):
+        user_id = int(globals.User["id"])
+        self.tree = ttk.Treeview(self.staff_content_frame, columns=("busseat_number", "booking_date", "total_amount"),show="headings")
+        self.tree.heading("busseat_number", text="busseat_number")
+        self.tree.heading("booking_date", text="booking_date")
+        self.tree.heading("total_amount", text="total_amount")
+
+        self.tree.column("busseat_number", width=100) 
+        self.tree.column("booking_date", width=75)  
+        self.tree.column("total_amount", width=75)  
+
+
+        #sudeep get data from database to fill the table 
+        self.tree.pack(fill="both",expand=True)
+
