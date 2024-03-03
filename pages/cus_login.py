@@ -107,3 +107,57 @@ class LoginPage(tk.Frame):
         for widget in frame.winfo_children():
             print(f"Destroying widget: {widget}")
             widget.destroy()
+
+    def forgotPassword(self):
+        self.clear_frame(self.login_frame)
+        self.forgotPage()
+        print("You forgot your password!!!!!")
+
+    def forgotPage(self):
+        email_lbl = ttk.Label(self.login_frame, text="Email")
+        email_lbl.grid(row=1, column=0, padx=10, pady=10, sticky="e")
+
+        self.entry_email = ttk.Entry(self.login_frame)
+        self.entry_email.grid(row=1, column=1, padx=10, pady=10, sticky="w")
+
+        recover_lbl = ttk.Label(self.login_frame, text="Recover Phrase")
+        recover_lbl.grid(row=2, column=0, padx=10, pady=10, sticky="e")
+
+        self.recover_key = ttk.Entry(self.login_frame)
+        self.recover_key.grid(row=2, column=1, padx=10, pady=10, sticky="w")       
+
+        lbl_password = ttk.Label(self.login_frame, text="New Password:")
+        lbl_password.grid(row=3, column=0, padx=10, pady=10, sticky="e")
+
+        self.new_password = ttk.Entry(self.login_frame)
+        self.new_password.grid(row=3, column=1, padx=10, pady=10, sticky="w")   
+
+        lbl_reenter_password = ttk.Label(self.login_frame, text="Re-enter Password:")
+        lbl_reenter_password.grid(row=4, column=0, padx=10, pady=10, sticky="e")
+
+        self.re_password = ttk.Entry(self.login_frame)
+        self.re_password.grid(row=4, column=1, padx=10, pady=10, sticky="w")    
+
+        btn_forgot = ttk.Button(self.login_frame, text="Recover", command=self.recover)
+        btn_forgot.grid(row=5, column=1, padx=10, pady=0, sticky="e")
+
+    def recover(self):
+        email = self.entry_email.get().strip()
+        phrase = self.recover_key.get().strip()
+        password = self.new_password.get().strip()
+        re_password = self.re_password.get().strip()
+        if password != re_password:
+            tk.messagebox.showerror(title = "Error",message = "Password didn't match with each other!!!")
+            return
+        try:
+            recover_password = self.db_instance.forgot_password(email,phrase,password)
+            if recover_password:
+                tk.messagebox.showinfo(title = "Success",message = "Password Successfully reset")
+            else:
+                tk.messagebox.showerror(title = "Error",message = "Failed to recover password!!!")
+
+        except Exception as e:
+            tk.messagebox.showerror(title = "Error",message = "Failed to recover password!!!")
+            return
+        self.clear_frame(self.login_frame)
+        self.customerPage()
