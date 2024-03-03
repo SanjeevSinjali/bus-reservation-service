@@ -65,7 +65,7 @@ class LoginPage(tk.Frame):
         print("Password:", password)
 
         #check database query for login check
-        user = True
+        user = self.db_instance.has_user(username, password,role="STAFF")
         if user is None:
             tk.messagebox.showerror(title = "Error",message = "User not Found!!!")
             return 
@@ -75,8 +75,8 @@ class LoginPage(tk.Frame):
         globals.User["role"] = user[2]
 
         # Create and show the Staff Home page
-        # home_page = staff_home.StaffPage(self.master)
-        # home_page.pack(fill="both", expand=True)
+        home_page = staff_home.StaffPage(self.master)
+        home_page.pack(fill="both", expand=True)
 
         # Destroy the Login page (optional)
         self.destroy()
