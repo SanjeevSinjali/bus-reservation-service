@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import Radiobutton, ttk
-from pages import login
+from pages import cus_login
 from lib import globals
 from tkcalendar import Calendar,DateEntry
 from lib import dbfunctions
@@ -106,7 +106,7 @@ class AdminPage(tk.Frame):
             print("Handling Logout button click in HomePage")
             globals.User = {}
             login_page_window = tk.Toplevel(self.master)
-            login_page = login.LoginPage(login_page_window)
+            login_page = cus_login.LoginPage(login_page_window)
             self.master.withdraw()
         elif clicked_button == "createAgency":
             self.clear_frame(self.admin_content_frame)
