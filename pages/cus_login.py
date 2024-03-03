@@ -1,8 +1,6 @@
-# login_page.py
-
 import tkinter as tk
 from tkinter import ttk,messagebox
-from pages import admin_login,staff_login
+from pages import admin_login,staff_login,cus_home,cus_register
 from lib import globals
 class LoginPage(tk.Frame):
     def __init__(self, master=None):
@@ -58,6 +56,18 @@ class LoginPage(tk.Frame):
         print("Username:", username)
         print("Password:", password)
 
+        user = self.db_instance.has_user(username, password)
+        if user is None:
+            tk.messagebox.showerror(title = "Error",message = "User not Found!!!")
+            return 
+
+        globals.User["id"] = user[0]
+        globals.User["fullname"] = user[1]
+        globals.User["role"] = user[2]
+
+        home_page = cus_home.HomePage(self.master)
+        home_page.pack(fill="both", expand=True)
+
         self.destroy()
     
     def init_page(self):
@@ -87,7 +97,8 @@ class LoginPage(tk.Frame):
         self.customerPage()
 
     def createAccount(self):
-        print("Go to create account")
+        self.destroy()
+        signup_page = cus_register.RegisterPage(self.master)
         
     def forgotPassword(self):
         print("You forgot your password!!!!!")
