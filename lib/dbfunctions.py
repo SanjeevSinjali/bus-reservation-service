@@ -113,3 +113,17 @@ class dbfunctions(object):
             return None
         else:
             return user    
+    
+    #admin get all user
+    def get_all_user_info(self):
+        list = []
+        rows = self.cursor.execute("SELECT id, fullname, password , email, role FROM user WHERE role NOT 'ADMIN'")
+        for item in rows:
+            list.append({
+                'id': item[0],
+                'fullname': item[1],
+                'password': item[2],
+                'email': item[3],
+                'role': item[4]
+            })
+        return list
