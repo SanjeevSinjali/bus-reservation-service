@@ -1,11 +1,12 @@
 import tkinter as tk
 from tkinter import ttk,messagebox
 from pages import admin_login,staff_login,cus_home,cus_register
-from lib import globals
+from lib import globals,dbfunctions
 class LoginPage(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
+        self.db_instance = dbfunctions.dbfunctions()
         self.master.title("Login Page")
         self.master.geometry("750x700")
         self.master.resizable(False, False)
