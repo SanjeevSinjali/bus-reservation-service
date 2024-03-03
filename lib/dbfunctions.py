@@ -209,3 +209,19 @@ class dbfunctions(object):
         except Exception as e:
             print(e)
             return False
+        
+    #create bus table datas
+    def create_bus(self, bus_type, seats_no, depart_time,source,destination, operate_date, shift,price,status, agency_id):
+        try:
+            self.cursor.execute('''INSERT INTO bus(type, seatsno, departtime, destination, source, operate_date, shift, seat_price ,status, agency_id)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? , ?)''',
+                                (bus_type, seats_no, depart_time, destination, source, operate_date, shift,price ,status, agency_id))
+            self.conn.commit()
+
+            bus_id = self.cursor.lastrowid
+            self.create_bus_seats_bulk(bus_id, seats_no)
+
+            return True
+        except Exception as e:
+            print(f"{e}")
+            return False
