@@ -130,3 +130,9 @@ class AdminPage(tk.Frame):
             tk.messagebox.showerror(title = "Error",message = "Could not created!!!")
         else:
             tk.messagebox.showerror(title = "Success",message = "Created Successfully!!!")
+        
+    def clear_frame(self, frame):
+        for widget in frame.winfo_children():
+            print(f"Destroying widget: {widget}")  # Debugging output
+            widget.destroy()
+        print("Frame cleared") 
