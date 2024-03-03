@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk,Radiobutton,filedialog
 from tkcalendar import Calendar,DateEntry
 from lib import globals,dbfunctions,createticket
+from pages import cus_login
 class Dashboard(tk.Frame):
     def __init__(self, master=None, button_callback=None):
             super().__init__(master)
@@ -368,8 +369,8 @@ class HomePage(tk.Frame):
             print("Handling Logout button click in HomePage")
             globals.User = {}
             login_page_window = tk.Toplevel(self.master)
-            # login_page = login.LoginPage(login_page_window)
-            # self.master.withdraw() 
+            login_page = cus_login.LoginPage(login_page_window)
+            self.master.withdraw() 
             
     def HistoryPage(self):
         self.tree = ttk.Treeview(self.content_frame, columns=("busseat_number", "booking_date", "total_amount"),show="headings")
