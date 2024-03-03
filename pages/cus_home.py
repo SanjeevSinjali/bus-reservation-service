@@ -370,3 +370,21 @@ class HomePage(tk.Frame):
             login_page_window = tk.Toplevel(self.master)
             # login_page = login.LoginPage(login_page_window)
             # self.master.withdraw() 
+            
+    def HistoryPage(self):
+        self.tree = ttk.Treeview(self.content_frame, columns=("busseat_number", "booking_date", "total_amount"),show="headings")
+        self.tree.heading("busseat_number", text="busseat_number")
+        self.tree.heading("booking_date", text="booking_date")
+        self.tree.heading("total_amount", text="total_amount")
+
+        self.tree.column("busseat_number", width=100)  # Adjust the width as needed
+        self.tree.column("booking_date", width=75)  # Adjust the width as needed
+        self.tree.column("total_amount", width=75)  # Adjust the width as needed
+
+        rows_data = self.db_instance.cursor.execute('SELECT bus_seat_number,booking_date,total_amount FROM booking where user_id=?',(globals.User["id"],)).fetchall()
+
+        
+        for row_data in rows_data:
+            self.tree.insert("", "end", values=row_data)
+
+        self.tree.pack(fill="both",expand=True)
