@@ -103,7 +103,15 @@ class HomePage(tk.Frame):
         btn_search_acc.grid(row=6, column=3, padx=10, pady=10, sticky="e")
         
     def search(self):
-        print("Search Container")
+        self.date = self.date_entry.get_date()
+        self.tabledatas = self.db_instance.search_travel_from_to(self.leaving_from_str.get(),self.going_to_str.get(),self.date,self.shift.get())
+        if self.tabledatas is False:
+            tk.messagebox.showerror(title = "Info",message = "Not Available")
+            return
+
+        self.clear_frame(self.content_frame)
+
+        self.searchPage()
         
     def clear_table_from_frame(self, frame):
         for widget in frame.winfo_children():
