@@ -179,7 +179,17 @@ class StaffPage(tk.Frame):
         updated_status_bus = self.status_bus.get()
         bus_id = self.selected_bus_id
         try: 
-            #sudeep write database query to update bus details
+            self.db_instance.cursor.execute('''UPDATE bus SET departtime=?,source=?,
+                                            destination=?,operate_date=?,shift=?,
+                                            seat_price=?,status=? WHERE 
+                                            id=?''',(updated_depart_time,
+                                                    updated_source,
+                                                    updated_destination,
+                                                    formatted_date,
+                                                    updated_shift,
+                                                    updated_seat_price,
+                                                    updated_status_bus,bus_id))
+            self.db_instance.conn.commit()
             tk.messagebox.showinfo(title = "Success",message = "Update Successfully!!!")
 
         except Exception as e:
