@@ -203,5 +203,11 @@ class StaffPage(tk.Frame):
             print("Handling Logout button click in HomePage")
             globals.User = {}
             login_page_window = tk.Toplevel(self.master)
-            login_page = login.LoginPage(login_page_window)
+            login_page = cus_login.LoginPage(login_page_window)
             self.master.withdraw() 
+            
+    def clear_frame(self, frame):
+        for widget in frame.winfo_children():
+            print(f"Destroying widget: {widget}")  # Debugging output
+            widget.destroy()
+        print("Frame cleared")  
