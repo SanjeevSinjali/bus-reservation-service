@@ -263,3 +263,23 @@ class dbfunctions(object):
             return True
         except:
             return False
+        
+    #update bus details
+    def update_bus(self, bus_id, new_type, new_seatsno, new_departtime, new_destination, new_source,
+                   new_operate_date, new_shift, new_status, new_agency_id):
+        new_type = new_type.strip()
+        new_departtime = new_departtime.strip()
+        new_destination = new_destination.strip()
+        new_source = new_source.strip()
+        new_shift = new_shift.strip()
+        new_status = new_status.strip()
+
+        try:
+            self.cursor.execute('UPDATE bus SET type=?, seatsno=?, departtime=?, destination=?, source=?, '
+                                'operate_date=?, shift=?, status=?, agency_id=? WHERE id=?',
+                                (new_type, new_seatsno, new_departtime, new_destination, new_source,
+                                 new_operate_date, new_shift, new_status, new_agency_id, bus_id))
+            self.conn.commit()
+            return True
+        except:
+            return False
