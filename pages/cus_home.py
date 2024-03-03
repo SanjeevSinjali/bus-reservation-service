@@ -351,3 +351,22 @@ class HomePage(tk.Frame):
         else: 
             return tk.messagebox.showerror(title = "Error",message = "Failed!!!")
         
+    def handle_dashboard_click(self, clicked_button):
+        if clicked_button == "Home":
+            self.clear_frame(self.content_frame)
+            self.HPage()
+            print("Handling Home button click in HomePage")
+        elif clicked_button == "History":
+            self.clear_frame(self.content_frame)
+            self.HistoryPage()
+            print("Handling History button click in HomePage")
+        elif clicked_button == "Settings":
+            print("Handling Settings button click in HomePage")
+            self.clear_frame(self.content_frame)
+            self.settingPage()
+        elif clicked_button == "Logout":
+            print("Handling Logout button click in HomePage")
+            globals.User = {}
+            login_page_window = tk.Toplevel(self.master)
+            # login_page = login.LoginPage(login_page_window)
+            # self.master.withdraw() 
