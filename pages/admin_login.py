@@ -15,7 +15,7 @@ class LoginPage(tk.Frame):
 
         img_label = tk.Label(self.master)
         img_label.place(relx=0, rely=0, relwidth=0.5, relheight=1)
-        img = tk.PhotoImage(file="/Users/sanjeev/Desktop/bus-reservation-service/data/images/bus.png")
+        img = tk.PhotoImage(file=globals.dataPath+"/bus.png")
         img_label.config(image=img)
         img_label.image = img
 
