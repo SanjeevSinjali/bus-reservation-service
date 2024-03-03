@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk,messagebox
 import re
-from pages import cus_login,login_staff
+from pages import cus_login,staff_login
 from lib import globals
 from lib import dbfunctions
 
@@ -111,7 +111,7 @@ class RegisterPage(tk.Frame):
             return 
 
         login_page_window = tk.Toplevel(self.master)
-        login_page = login_staff.LoginPage(login_page_window)
+        login_page = staff_login.LoginPage(login_page_window)
         self.master.withdraw()  # Hide the main window
 
 
