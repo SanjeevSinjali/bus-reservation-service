@@ -13,13 +13,9 @@ class MainApp(tk.Tk):
     def show_login_page(self):
         self.login_page = cus_login.LoginPage(self)
         self.login_page.pack(fill="both", expand=True)
-        #show login page
-        print("I am login page")
 
     def show_register_page(self):
         self.register_page = cus_register.RegisterPage(self)
-        #show register page
-        print("I am register page")
         
 if __name__ == "__main__":
     globals.dataPath = os.path.abspath("./data/images")
