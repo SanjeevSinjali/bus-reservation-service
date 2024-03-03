@@ -68,3 +68,28 @@ class dbfunctions(object):
                                 )''')
         self.conn.commit()
         # self.conn.close()
+        
+    def create_user(self, fullname, password,email,phonenumber,pin,agency_name=None,role="CUSTOMER",):
+        print(agency_name)
+        print(role)
+        fullname = fullname.strip()
+        password = password.strip()
+        email = email.strip()
+        phonenumber = int(phonenumber)
+        if pin is not None:
+            pin = int(pin)
+        if agency_name is not None:
+            agency_name = agency_name.strip()     
+        role = role.strip()
+        try:
+            if agency_name is not None:
+                agency_id = self.cursor.execute('SELECT id FROM agency where name=?',(agency_name,)).fetchone()
+                self.cursor.execute('INSERT INTO user(email, fullname, password,phonenumber,role,agency_id) VALUES(?,?,?,?,?,?)', (email ,fullname, password , phonenumber,role,agency_id[0]))
+            else:
+                self.cursor.execute('INSERT INTO user(email, fullname, password,phonenumber,role,pin) VALUES(?,?,?,?,?,?)', (email ,fullname, password , phonenumber, role,pin))
+            self.conn.commit()
+            return True
+        except Exception as e :
+            print(f"Error during insertion: {e}")
+            return False
+        
