@@ -1,11 +1,11 @@
 import tkinter as tk
 import os
-from pages import cus_login
+from pages import cus_login,cus_register
 from lib import globals
 class MainApp(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Main Application")
+        self.title("Bus Reservation Service")
         self.geometry("640x480")
         self.show_login_page()
 
@@ -17,6 +17,7 @@ class MainApp(tk.Tk):
         print("I am login page")
 
     def show_register_page(self):
+        self.register_page = cus_register.RegisterPage(self)
         #show register page
         print("I am register page")
         
