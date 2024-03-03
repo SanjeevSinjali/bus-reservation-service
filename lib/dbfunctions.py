@@ -200,3 +200,12 @@ class dbfunctions(object):
             travels[i] = agency_name + travels[i]
         print(travels)
         return travels
+    
+    #creating agency
+    def create_agency(self,name,status="ACTIVE"):
+        try:
+            self.cursor.execute('''INSERT INTO agency(name,status) VALUES(?,?)''',(name,status))
+            self.conn.commit()
+        except Exception as e:
+            print(e)
+            return False
