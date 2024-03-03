@@ -388,3 +388,11 @@ class dbfunctions(object):
                     isAvailable = "BOOKED"
                 tabeldata[i] = tabeldata[i][0] , isAvailable,tabeldata[i][2],seat_price
             return tabeldata
+      
+    #get all destination and source list from database    
+    def get_all_destination_source(self):
+        try:
+            source_destination = self.cursor.execute('''SELECT source,destination FROM bus''').fetchall()
+            return source_destination
+        except Exception as e:
+            return False
