@@ -356,3 +356,17 @@ class dbfunctions(object):
             return True
         except:
             return False
+    
+    #get all booking list    
+    def get_all_bookings(self):
+        booking_list = []
+        rows = self.cursor.execute("SELECT * FROM booking")
+        for item in rows:
+            booking_list.append({
+                'id': item[0],
+                'user_id': item[1],
+                'busseat_id': item[2],
+                'booking_date': item[3],
+                'total_amount': item[4]
+            })
+        return booking_list
