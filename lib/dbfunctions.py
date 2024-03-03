@@ -334,3 +334,15 @@ class dbfunctions(object):
                 'agency_id': item[10]
             })
         return bus_list
+    
+    #get all agency list
+    def get_all_agency_info(self):
+        agency_list = []
+        rows = self.cursor.execute("SELECT * FROM agency")
+        for item in rows:
+            agency_list.append({
+                'id': item[0],
+                'name': item[1],
+                'status': item[2]
+            })
+        return agency_list
