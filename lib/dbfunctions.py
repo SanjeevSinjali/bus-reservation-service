@@ -183,3 +183,20 @@ class dbfunctions(object):
         else:
             print(user_data)
             return user_data
+        
+    #search function for customer  
+    def search_travel_from_to(self, source, destination, date, shift):
+        self.cursor.execute('SELECT type, shift, status, seat_price,id, agency_id FROM bus WHERE source=? AND destination=? AND operate_date=? AND shift=?', (source, destination, date, shift))
+        travels = self.cursor.fetchall()
+        print("Number of results:", len(travels))
+
+        if not travels:
+            return False
+
+        for i in range(0, len(travels)):
+            agency_id = int(travels[i][5])
+            self.cursor.execute('SELECT name FROM agency WHERE id=?',(agency_id,))
+            agency_name = self.cursor.fetchone()
+            travels[i] = agency_name + travels[i]
+        print(travels)
+        return travels
