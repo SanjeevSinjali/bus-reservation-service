@@ -102,5 +102,16 @@ class HomePage(tk.Frame):
         btn_search_acc = ttk.Button(self.content_frame, text="Search", command=self.search)
         btn_search_acc.grid(row=6, column=3, padx=10, pady=10, sticky="e")
         
-def search(self):
+    def search(self):
         print("Search Container")
+        
+    def clear_table_from_frame(self, frame):
+        for widget in frame.winfo_children():
+            if isinstance(widget, ttk.Treeview):
+                widget.destroy()
+
+    def clear_frame(self, frame):
+        for widget in frame.winfo_children():
+            print(f"Destroying widget: {widget}")  # Debugging output
+            widget.destroy()
+        print("Frame cleared") 
