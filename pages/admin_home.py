@@ -96,3 +96,18 @@ class AdminPage(tk.Frame):
             staff_tree.insert("", "end", values=(staff_member[0], staff_member[1], staff_member[2],staff_member[4]))
 
         staff_tree.pack(fill="both", expand=True)
+        
+    def handle_dashboard_click(self, clicked_button):
+        if clicked_button == "Home":
+            self.clear_frame(self.admin_content_frame)
+            self.APage()
+            print("Handling Home button click in HomePage")
+        elif clicked_button == "Logout":
+            print("Handling Logout button click in HomePage")
+            globals.User = {}
+            login_page_window = tk.Toplevel(self.master)
+            login_page = login.LoginPage(login_page_window)
+            self.master.withdraw()
+        elif clicked_button == "createAgency":
+            self.clear_frame(self.admin_content_frame)
+            self.create_agency()
