@@ -127,3 +127,14 @@ class dbfunctions(object):
                 'role': item[4]
             })
         return list
+    
+    #get single user info
+    def get_one_user_info(self,user_id):
+        print(user_id)
+        print(type(user_id))
+        user = self.cursor.execute("SELECT fullname, email , phonenumber , password FROM user WHERE id=?",(user_id,)).fetchone()
+        print(user)
+        if user is None:
+            return False
+        else :
+            return user
