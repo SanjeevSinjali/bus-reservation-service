@@ -111,3 +111,22 @@ class AdminPage(tk.Frame):
         elif clicked_button == "createAgency":
             self.clear_frame(self.admin_content_frame)
             self.create_agency()
+            
+    def create_agency(self):
+        # Entry for Agency Name
+        ttk.Label(self.admin_content_frame, text="Agency Name:").grid(row=4, column=1, padx=10, pady=10, sticky="e")
+        self.agency_name = ttk.Entry(self.admin_content_frame)
+        self.agency_name.grid(row=4, column=2, padx=10, pady=10, sticky="w")
+
+        # Create Agency Button
+        ttk.Button(self.admin_content_frame, text="Create Agency", command=self.create_agency_fn).grid(row=5, column=1, columnspan=2, pady=10)
+
+        
+    def create_agency_fn(self):
+        print(self.agency_name.get())
+        name = self.agency_name.get()
+        createA = self.db_instance.create_agency(name)
+        if createA:
+            tk.messagebox.showerror(title = "Error",message = "Could not created!!!")
+        else:
+            tk.messagebox.showerror(title = "Success",message = "Created Successfully!!!")
