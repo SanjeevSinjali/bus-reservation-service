@@ -235,3 +235,18 @@ class dbfunctions(object):
         except Exception as e:
             print(e)
             return False 
+        
+    #update user details    
+    def update_user(self, new_fullname, new_password, new_email, new_phonenumber,user_id):
+        new_fullname = new_fullname.strip()
+        new_password = new_password.strip()
+        new_email = new_email.strip()
+        # new_phonenumber = new_phonenumber
+
+        try:
+            self.cursor.execute('UPDATE user SET fullname=?, password=?, email=?, phonenumber=? WHERE id=?',
+                                (new_fullname, new_password, new_email, new_phonenumber, user_id,))
+            self.conn.commit()
+            return True
+        except:
+            return False
