@@ -304,3 +304,33 @@ class dbfunctions(object):
             return True
         except:
             return False
+        
+    def get_all_bus_info(self,user_id):
+        bus_list = []
+        try:
+            # rows = self.cursor.execute("SELECT * FROM bus")
+
+            rows = self.cursor.execute('''
+                            SELECT *
+                            FROM bus
+                            JOIN agency ON bus.agency_id = agency.id
+                            JOIN user ON user.agency_id = agency.id
+                            WHERE user.id = ?''',(user_id,)).fetchall()
+        except Exception as e:
+            print(e)
+            return False
+        for item in rows:
+            bus_list.append({
+                'id': item[0],
+                'type': item[1],
+                'seatsno': item[2],
+                'departtime': item[3],
+                'destination': item[4],
+                'source': item[5],
+                'operate_date': item[6],
+                'shift': item[7],
+                'seatprice': item[8],
+                'status': item[9],
+                'agency_id': item[10]
+            })
+        return bus_list
