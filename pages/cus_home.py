@@ -1,7 +1,7 @@
 import tkinter as tk
-from tkinter import ttk,Radiobutton
+from tkinter import ttk,Radiobutton,filedialog
 from tkcalendar import Calendar,DateEntry
-from lib import globals,dbfunctions
+from lib import globals,dbfunctions,createticket
 class Dashboard(tk.Frame):
     def __init__(self, master=None, button_callback=None):
             super().__init__(master)
@@ -209,3 +209,96 @@ class HomePage(tk.Frame):
 
         book_btn = ttk.Button(self.content_frame, text="Book", command=self.book_selected)
         book_btn.grid(row=4, column=3, padx=10, pady=10, sticky="e")
+        
+    def book_selected(self):
+        selected_items = self.tree.selection()
+        self.a = {
+            "seats": [],
+            "bus_id": "",
+        }
+        if selected_items:
+            for item in selected_items:
+                values = self.tree.item(item, 'values')
+                if values[1] == "BOOKED":
+                    tk.messagebox.showerror(title = "Error",message = f'Seat Number : {values[0]} already booked!!!')
+                    self.tree.selection_remove(item)
+                    return 
+                else:
+                    self.a["seats"].append(int(values[0]))
+                    self.a["bus_id"] = values[2]
+                print("Selected Row Values:", values)
+        else:
+            print("No rows selected.")
+        # self.destroy()
+        self.clear_frame(self.content_frame)
+        self.final_book_page()
+        
+    def final_book_page(self):
+        self.total = 0
+
+        self.oneprice = self.bookdatas[0][3][0][0]
+        for i in self.a["seats"]:
+            self.total = self.total + self.oneprice
+        
+        payment_lbl = ttk.Label(self.content_frame, text=f"Payment")
+        payment_lbl.grid(row=0, column=0, padx=10, pady=10, sticky="e")
+
+        seats_lbl = ttk.Label(self.content_frame, text=f"Seats: {self.a['seats']}")
+        seats_lbl.grid(row=1, column=0, padx=20, pady=10, sticky="e")
+
+        bus_lbl = ttk.Label(self.content_frame, text=f"Bus_id: {self.a['bus_id']}")
+        bus_lbl.grid(row=2, column=0, padx=20, pady=10, sticky="e")
+
+        price_lbl = ttk.Label(self.content_frame, text=f"Total Price: {self.total}")
+        price_lbl.grid(row=3, column=0, padx=20, pady=10, sticky="e")
+
+        price_lbl = ttk.Label(self.content_frame, text=f"TransactionPin :")
+        price_lbl.grid(row=4, column=0, padx=20, pady=10, sticky="e")
+
+        self.transaction_pin = ttk.Entry(self.content_frame)
+        self.transaction_pin.grid(row=4, column=1, padx=10, pady=10, sticky="w")
+
+        book_btn = ttk.Button(self.content_frame, text="Book", command=self.final_book_selected)
+        book_btn.grid(row=5, column=3, padx=10, pady=10, sticky="e")
+
+    def final_book_selected(self):
+        self.date
+        pin = self.transaction_pin.get()
+        bus_id = self.a["bus_id"]
+        user_id = globals.User["id"]
+        get_pin_from_user = self.db_instance.cursor.execute('''SELECT pin FROM user where id=?''',(user_id,)).fetchone()
+        # print(get_pin_from_user[0])
+        if int(pin) != get_pin_from_user[0]:
+                tk.messagebox.showerror(title = "Error",message = "Pin Incorrect!!")
+                return 
+        try:
+            for i in self.a["seats"]:
+                booking_date = self.date
+                bus_seat_ids = self.a["seats"]
+                total_amount = self.total
+                print(user_id,bus_id,booking_date,total_amount)
+                self.db_instance.cursor.execute('INSERT INTO booking(user_id,bus_id,bus_seat_number,booking_date,total_amount) VALUES(?,?,?,?,?)',(user_id,bus_id,i,booking_date,self.oneprice))
+                self.db_instance.conn.commit()
+
+            for i in self.a["seats"]:
+                self.db_instance.cursor.execute('UPDATE busseat SET isAvailable=? where seatnumber=?',(0,i))
+                self.db_instance.conn.commit()
+
+
+            tk.messagebox.showinfo(title = "Success",message = "Payment Success!!! \n Generating ticket")
+
+            file_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
+
+            if file_path:
+                ticket_pdf = createticket.TicketPDF(seats=self.a["seats"], bus_id=bus_id, total_amount=total_amount,
+                                       username=globals.User["fullname"],file_path=file_path)
+                ticket_pdf.generate_pdf()
+
+        except Exception as e:
+                print(e)
+                tk.messagebox.showerror(title = "Error",message = "Couldn't process!!")
+                return 
+        tk.messagebox.showinfo(title = "Success",message = "Ticket Generated")
+        
+        self.a = {}
+        
